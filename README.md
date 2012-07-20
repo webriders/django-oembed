@@ -3,7 +3,12 @@ Fork of django-oembed from googlecode by WebRiders
 
 Changes
 -------------
-TODO: write down.
+Now you can specify fixed width and height for the media using preceding '!' symbol.
+E.g.: {% oembed !640x!480 %}http://www.viddler.com/explore/SYSTM/videos/49/{% endoembed %}
+
+TODO
+-------------
+Update docs.
 
 django-oembed
 -------------

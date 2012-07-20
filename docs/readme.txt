@@ -1,6 +1,17 @@
-=======================
+Fork of django-oembed from googlecode by WebRiders
+==================================================
+
+Changes
+-------------
+Now you can specify fixed width and height for the media using preceding '!' symbol.
+E.g.: {% oembed !640x!480 %}http://www.viddler.com/explore/SYSTM/videos/49/{% endoembed %}
+
+TODO
+-------------
+Update docs.
+
 django-oembed
-=======================
+-------------
 
 This is a collection of tools for Django to allow for replacing links in text
 with OEmbed.  This application also provides utilities to make this process not
