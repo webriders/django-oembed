@@ -22,6 +22,7 @@ MAX_WIDTH = getattr(settings, "OEMBED_MAX_WIDTH", 320)
 MAX_HEIGHT = getattr(settings, "OEMBED_MAX_HEIGHT", 240)
 FORMAT = getattr(settings, "OEMBED_FORMAT", "json")
 
+
 def fetch(url, user_agent="django-oembed/0.1"):
     """
     Fetches from a URL, respecting GZip encoding, etc.
@@ -36,6 +37,7 @@ def fetch(url, user_agent="django-oembed/0.1"):
         result = gzip.GzipFile(fileobj=StringIO(result)).read()
     f.close()
     return result
+
 
 def re_parts(regex_list, text):
     """
@@ -62,10 +64,10 @@ def re_parts(regex_list, text):
         return x.start() - y.start()
     prev_end = 0
     iter_dict = dict((r, r.finditer(text)) for r in regex_list)
-    
+
     # a heapq containing matches
     matches = []
-    
+
     # bootstrap the search with the first hit for each iterator
     for regex, iterator in iter_dict.items():
         try:
@@ -73,7 +75,7 @@ def re_parts(regex_list, text):
             heappush(matches, (match.start(), match))
         except StopIteration:
             iter_dict.pop(regex)
-    
+
     # process matches, revisiting each iterator from which a match is used
     while matches:
         # get the earliest match
@@ -98,25 +100,26 @@ def re_parts(regex_list, text):
     if len(last_bit) > 0:
         yield (-1, last_bit)
 
-def replace(text, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):
+
+def replace(text, max_width=MAX_WIDTH, max_height=MAX_HEIGHT, fixed_width=False, fixed_height=False):
     """
     Scans a block of text, replacing anything matched by a ``ProviderRule``
     pattern with an OEmbed html snippet, if possible.
-    
+
     Templates should be stored at oembed/{format}.html, so for example:
-        
+
         oembed/video.html
-        
-    These templates are passed a context variable, ``response``, which is a 
+
+    These templates are passed a context variable, ``response``, which is a
     dictionary representation of the response.
     """
     rules = list(ProviderRule.objects.all())
-    patterns = [re.compile(r.regex) for r in rules] # Compiled patterns from the rules
-    parts = [] # The parts that we will assemble into the final return value.
-    indices = [] # List of indices of parts that need to be replaced with OEmbed stuff.
-    indices_rules = [] # List of indices into the rules in order for which index was gotten by.
-    urls = set() # A set of URLs to try to lookup from the database.
-    stored = {} # A mapping of URLs to StoredOEmbed objects.
+    patterns = [re.compile(r.regex) for r in rules]  # Compiled patterns from the rules
+    parts = []  # The parts that we will assemble into the final return value.
+    indices = []  # List of indices of parts that need to be replaced with OEmbed stuff.
+    indices_rules = []  # List of indices into the rules in order for which index was gotten by.
+    urls = set()  # A set of URLs to try to lookup from the database.
+    stored = {}  # A mapping of URLs to StoredOEmbed objects.
     index = 0
     # First we pass through the text, populating our data structures.
     for i, part in re_parts(patterns, text):
@@ -137,9 +140,9 @@ def replace(text, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):
             if to_append:
                 parts.append(to_append)
                 index += 1
-    # Now we fetch a list of all stored patterns, and put it in a dictionary 
+    # Now we fetch a list of all stored patterns, and put it in a dictionary
     # mapping the URL to to the stored model instance.
-    for stored_embed in StoredOEmbed.objects.filter(match__in=urls, max_width=max_width, max_height = max_height):
+    for stored_embed in StoredOEmbed.objects.filter(match__in=urls, max_width=max_width, max_height=max_height):
         stored[stored_embed.match] = stored_embed
     # Now we're going to do the actual replacement of URL to embed.
     for i, id_to_replace in enumerate(indices):
@@ -155,6 +158,12 @@ def replace(text, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):
                 url = u"%s?url=%s&maxwidth=%s&maxheight=%s&format=%s" % (
                     rule.endpoint, part, max_width, max_height, FORMAT
                 )
+
+                if fixed_width:
+                    url += '&width=%s' % max_width
+                if fixed_height:
+                    url += '&height=%s' % max_height
+
                 # Fetch the link and parse the JSON.
                 resp = simplejson.loads(fetch(url))
                 # Depending on the embed type, grab the associated template and
@@ -162,10 +171,11 @@ def replace(text, max_width=MAX_WIDTH, max_height=MAX_HEIGHT):
                 replacement = render_to_string('oembed/%s.html' % resp['type'], {'response': resp})
                 if replacement:
                     stored_embed = StoredOEmbed.objects.create(
-                        match = part,
-                        max_width = max_width,
-                        max_height = max_height,
-                        html = replacement,
+                        match=part,
+                        max_width=max_width,
+                        max_height=max_height,
+                        html=replacement,
+                        oembed=simplejson.dumps(resp)
                     )
                     stored[stored_embed.match] = stored_embed
                     parts[id_to_replace] = replacement
