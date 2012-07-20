@@ -1,6 +1,12 @@
-=======================
+Fork of django-oembed from googlecode by WebRiders
+==================================================
+
+Changes
+-------------
+TODO: write down.
+
 django-oembed
-=======================
+-------------
 
 This is a collection of tools for Django to allow for replacing links in text
 with OEmbed.  This application also provides utilities to make this process not
