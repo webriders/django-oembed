@@ -28,3 +28,4 @@ pip-log.txt
 
 # Various
 .DS_Store
+.idea
