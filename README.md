@@ -6,6 +6,8 @@ Changes
 Now you can specify fixed width and height for the media using preceding '!' symbol.
 E.g.: {% oembed !640x!480 %}http://www.viddler.com/explore/SYSTM/videos/49/{% endoembed %}
 
+Added provider rules for https based urls.
+
 TODO
 -------------
 Update docs.
