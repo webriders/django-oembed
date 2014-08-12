@@ -6,6 +6,9 @@ Changes
 Now you can specify fixed width and height for the media using preceding '!' symbol.
 E.g.: {% oembed !640x!480 %}http://www.viddler.com/explore/SYSTM/videos/49/{% endoembed %}
 
+Fixed provider rules for providers which supports https  (Flickr, Revision3,
+Google Videos, Wikipedia, YouTube and Vimeo).
+
 TODO
 -------------
 Update docs.
