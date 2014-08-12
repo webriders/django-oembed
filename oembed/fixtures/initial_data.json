@@ -3,8 +3,8 @@
     "pk": 1,
     "model": "oembed.providerrule",
     "fields": {
-      "regex": "http:\/\/\\S*?flickr.com\/\\S*",
-      "endpoint": "http:\/\/www.flickr.com\/services\/oembed\/",
+      "regex": "http(s)?:\/\/\\S*?flickr.com\/\\S*",
+      "endpoint": "https:\/\/www.flickr.com\/services\/oembed\/",
       "name": "Flickr",
       "format": 1
     }
@@ -43,8 +43,8 @@
     "pk": 5,
     "model": "oembed.providerrule",
     "fields": {
-      "regex": "http:\/\/\\S*?revision3.com\/\\S*",
-      "endpoint": "http:\/\/revision3.com\/api\/oembed\/",
+      "regex": "http(s)?:\/\/\\S*?revision3.com\/\\S*",
+      "endpoint": "https:\/\/revision3.com\/api\/oembed\/",
       "name": "Revision3",
       "format": 1
     }
@@ -83,7 +83,7 @@
     "pk": 9,
     "model": "oembed.providerrule",
     "fields": {
-      "regex": "http:\/\/video.google.com\/videoplay?\\S*",
+      "regex": "http(s)?:\/\/video.google.com\/videoplay?\\S*",
       "endpoint": "http:\/\/oohembed.com\/oohembed\/",
       "name": "Google Video (OohEmbed)",
       "format": 1
@@ -123,7 +123,7 @@
     "pk": 13,
     "model": "oembed.providerrule",
     "fields": {
-      "regex": "http:\/\/\\S*.wikipedia.org\/wiki\/\\S*",
+      "regex": "http(s)?:\/\/\\S*.wikipedia.org\/wiki\/\\S*",
       "endpoint": "http:\/\/oohembed.com\/oohembed\/",
       "name": "Wikipedia (OohEmbed)",
       "format": 1
@@ -133,7 +133,7 @@
     "pk": 14,
     "model": "oembed.providerrule",
     "fields": {
-      "regex": "http:\/\/\\S*.youtube.com\/watch\\S*",
+      "regex": "http(s)?:\/\/\\S*.youtube.com\/watch\\S*",
       "endpoint": "http:\/\/oohembed.com\/oohembed\/",
       "name": "YouTube (OohEmbed)",
       "format": 1
@@ -143,29 +143,9 @@
     "pk": 15,
     "model": "oembed.providerrule",
     "fields": {
-      "regex": "http:\/\/vimeo.com\/\\S*",
-      "endpoint": "http:\/\/vimeo.com\/api\/oembed.json",
-      "name": "Vimeo",
-      "format": 1
-    }
-  },
-  {
-    "pk": 16,
-    "model": "oembed.providerrule",
-    "fields": {
-      "regex": "https:\/\/\\S*?flickr.com\/\\S*",
-      "endpoint": "https:\/\/www.flickr.com\/services\/oembed\/",
-      "name": "Flickr by https",
-      "format": 1
-    }
-  },
-  {
-    "pk": 17,
-    "model": "oembed.providerrule",
-    "fields": {
-      "regex": "https:\/\/vimeo.com\/\\S*",
+      "regex": "http(s)?:\/\/vimeo.com\/\\S*",
       "endpoint": "https:\/\/vimeo.com\/api\/oembed.json",
-      "name": "Vimeo by https",
+      "name": "Vimeo",
       "format": 1
     }
   },
